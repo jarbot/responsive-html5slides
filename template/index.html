@@ -1,6 +1,14 @@
 <!DOCTYPE html>
-
+<!--[if lt IE 7]> <html class="ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <!--
+  Responsive html5slides
+  Author: Jared Gholston
+  URL: https://github.com/jarbot/responsive-html5slides
+
+  Based on:
   Google HTML5 slide template
 
   Authors: Luke Mahé (code)
@@ -11,23 +19,12 @@
 
   URL: http://code.google.com/p/html5slides/
 -->
-
-<html>
   <head>
     <title>Presentation</title>
-
     <meta charset='utf-8'>
-    <script
-      src='http://html5slides.googlecode.com/svn/trunk/slides.js'></script>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/responsive_slides.css">
   </head>
-  
-  <style>
-    /* Your individual styles here, or just use inline styles if that’s
-       what you want. */
-    
-    
-  </style>
-
   <body style='display: none'>
 
     <section class='slides layout-regular template-default'>
@@ -236,7 +233,7 @@
           Slide with an image
         </h3>
         <p>
-          <img style='height: 500px' src='images/example-graph.png'>
+          <img src='images/example-graph.png' class="resize">
         </p>
         <div class='source'>
           Source: Sergey Brin
@@ -248,7 +245,7 @@
           Slide with an image (centered)
         </h3>
         <p>
-          <img class='centered' style='height: 500px' src='images/example-graph.png'>
+          <img class='centered' src='images/example-graph.png' class="resize">
         </p>
         <div class='source'>
           Source: Larry Page
@@ -296,7 +293,7 @@
           This slide has some code (small font)
         </h3>
         <section>
-        <pre>
+<pre>
 &lt;script type='text/javascript'&gt;
   // Say hello world until the user starts questioning
   // the meaningfulness of their existence.
@@ -365,6 +362,8 @@
       </article>
 
     </section>
+
+    <script src='js/slides.js'></script>
 
   </body>
 </html>

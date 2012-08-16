@@ -587,7 +587,7 @@ function handleDomLoaded() {
   setupFrames();
 
   addFontStyle();
-  addGeneralStyle();
+  //addGeneralStyle();
   addPrettify();
   addEventListeners();
 
@@ -596,7 +596,32 @@ function handleDomLoaded() {
   setupInteraction();
   makeBuildLists();
 
+  handleResize();
+
   document.body.classList.add('loaded');
+};
+
+
+document.getElementsByClassName = function(className, parentElement) {
+    var children = document.body.getElementsByTagName('*');
+    var elements = [], child;
+    for (var i = 0, length = children.length; i < length; i++) {
+        child = children[i];
+        var elementClassName = child.className;
+        if(elementClassName.length > 0 && (elementClassName == className ||
+            new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName))) {
+            elements.push(child);
+        }
+    }
+    return elements;
+};
+
+function handleResize() {
+    var imgTags = document.getElementsByClassName("resize"), parentWidth;
+    for(var i = 0; i < imgTags.length; i++) {
+        parentWidth = imgTags[i].parentNode.offsetWidth * 0.60;
+        imgTags[i].style.height = parentWidth + "px";
+    }
 };
 
 function initialize() {
@@ -611,6 +636,8 @@ function initialize() {
   } else {
     document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
   }
+
+  window.addEventListener('resize', handleResize, false);
 }
 
 // If ?debug exists then load the script relative instead of absolute
