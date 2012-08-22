@@ -596,6 +596,7 @@ function handleDomLoaded() {
   setupInteraction();
   makeBuildLists();
 
+  autoSizeText.initialize({targets:{testFlow:"testFlow"}});
   handleResize();
 
   document.body.classList.add('loaded');
@@ -623,6 +624,88 @@ function handleResize() {
         imgTags[i].style.height = parentWidth + "px";
     }
 };
+
+var extendObject = function(targetObject, objectToExtend ) {
+
+    for (var prop in objectToExtend) {
+        if (objectToExtend.hasOwnProperty(prop)) {
+            targetObject[prop] = objectToExtend[prop];
+        }
+    }
+
+    return targetObject;
+};
+
+var autoSizeText = {
+    _initialized: false,
+    options: {
+        targets: {}
+    },
+    _defaultOptions: new Object,
+    _setOptions: function(options) {
+        this.options = extendObject(this.options, options || {});
+    },
+    _setStyle: function(el, styleString) {
+        // for setting inline styles on an element
+        // styleString is a full style string e.g. font-size: 100px;
+        var inlineStyles = el.getAttribute("style");
+        if(typeof inlineStyles !== "undefined" && inlineStyles !== null) {
+            inlineStyles += " " + styleString;
+        } else {
+            inlineStyles = styleString;
+        }
+        el.setAttribute("style", inlineStyles);
+    },
+    _getStyle: function(el,styleProp) {
+        var camelize = function (str) {
+            return str.replace(/\-(\w)/g, function(str, letter){
+                return letter.toUpperCase();
+            });
+        };
+
+        if (el.currentStyle) {
+            return el.currentStyle[camelize(styleProp)];
+        } else if (document.defaultView && document.defaultView.getComputedStyle) {
+            return document.defaultView.getComputedStyle(el,null)
+                .getPropertyValue(styleProp);
+        } else {
+            return el.style[camelize(styleProp)];
+        }
+    },
+    _adjustFontSize: function() {
+        for (key in autoSizeText.options.targets) {
+            // check to see if text is overflowing
+            var element = document.getElementById(autoSizeText.options.targets[key]);
+
+            var newFontSize = Math.max(Math.min(element.offsetWidth / 8, 70), 20);
+                element.setAttribute("style","font-size: " + newFontSize  + "px;");
+        }
+    },
+    _bindResize: function() {
+        this._adjustFontSize(); // call on initialization
+        window.addEventListener('resize', autoSizeText._adjustFontSize, false);
+    },
+    initialize: function(options) {
+        if (this._initialized) {
+            return;
+        }
+        // set default options for resetting
+        this._defaultOptions = extendObject(this._defaultOptions, this.options);
+
+        // set custom options
+        this._setOptions(options);
+
+        this._bindResize();
+
+        this._initialized = true;
+    },
+    addTarget: function(target) {
+        this.options.targets[target] = target;
+    }
+};
+
+
+
 
 function initialize() {
   getCurSlideFromHash();
